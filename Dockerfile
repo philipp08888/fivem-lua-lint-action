@@ -1,3 +1,9 @@
+ARG RESOURCES_PATH
+ENV RESOURCES_PATH=$RESOURCES_PATH
+
+ARG IGNORED_SCRIPTS
+ENV IGNORED_SCRIPTS=$IGNORED_SCRIPTS
+
 FROM evandarwin/lua:latest
 RUN luarocks install argparse && \
     luarocks install luafilesystem && \
