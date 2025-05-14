@@ -18,11 +18,19 @@ inputs:
     description: "extra definitions to use, in the format of a+b+c"
     required: false
     default: ""
+  ignored_scripts:
+    description: "comma-separated list of script names that are getting ignored by the linter"
+    required: false
+    default: ""
 runs:
   using: "docker"
   image: "Dockerfile"
+  env:
+    RESOURCES_PATH: ${{ inputs.paths }}
+    IGNORED_SCRIPTS: ${{ inputs.ignored_scripts }}
   args:
     - ${{ inputs.args }}
     - ${{ inputs.paths }}
     - ${{ inputs.capture }}
     - ${{ inputs.extra_libs }}
+    - ${{ inputs.ignored_scripts }}
