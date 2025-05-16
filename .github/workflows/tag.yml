@@ -3,7 +3,7 @@ name: Create Commit Tag
 on:
   push:
     branches:
-      - main
+      - master
 
 jobs:
   create-tag:
