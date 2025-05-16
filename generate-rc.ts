@@ -194,7 +194,6 @@ async function fetchAllNatives(): Promise<MappedNativeResponse> {
 }
 
 fetchAllNatives().then(natives => {
-  console.log("test ^122");
   let template = fs.readFileSync(
     path.join(__dirname, ".luacheckrc.template"),
     "utf-8"
@@ -231,10 +230,6 @@ fetchAllNatives().then(natives => {
         env.IGNORED_SCRIPTS.some(v => v.toLowerCase() === key.toLowerCase())
       );
 
-      if (excludedScriptKeys.length === 0) {
-        //return;
-      }
-
       const excludedFiles: Array<string> = [];
 
       for (const excludedScriptKey of excludedScriptKeys) {
@@ -259,9 +254,6 @@ fetchAllNatives().then(natives => {
   }
 
   template = template.replace(/%%EXTRA%%/g, extraLibs);
-
-  const c = `${__dirname}/.luacheckrc`;
-  console.log({ c });
 
   fs.writeFileSync(path.join(__dirname, ".luacheckrc"), template);
   console.log(ansi.gray(`=`.repeat(29)));
