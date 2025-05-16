@@ -44,3 +44,8 @@ echo "exit => $EXIT_CODE"
 if [ $EXIT_CODE -ge 2 ]; then
  exit $EXIT_CODE
 fi
+
+## check if all needed variables are there
+## run yarn build
+## check if file is there
+## run luacheck

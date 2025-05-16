@@ -21,7 +21,7 @@ inputs:
   ignored_scripts:
     description: "comma-separated list of script names that are getting ignored by the linter"
     required: false
-    default: ""
+    default: "test123,fc_garage"
 runs:
   using: "docker"
   image: "Dockerfile"
