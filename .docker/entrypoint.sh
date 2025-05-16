@@ -3,6 +3,16 @@ LUACHECK_ARGS="--config /luacheck-fivem/.luacheckrc $1"
 LUACHECK_PATH="$2"
 LUACHECK_CAPTURE_OUTFILE="$GITHUB_WORKSPACE/$3"
 
+echo $0
+echo $1
+echo $2
+echo $3
+echo $4
+echo $5
+echo $6
+echo $7
+echo $8
+
 # extra luacheck definitions
 if [[ ! -z "$4" ]]; then
   OLD_DIR=$(pwd)
