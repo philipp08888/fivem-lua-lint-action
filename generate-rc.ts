@@ -232,7 +232,7 @@ fetchAllNatives().then(natives => {
       );
 
       if (excludedScriptKeys.length === 0) {
-        return;
+        //return;
       }
 
       const excludedFiles: Array<string> = [];
