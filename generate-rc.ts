@@ -194,6 +194,7 @@ async function fetchAllNatives(): Promise<MappedNativeResponse> {
 }
 
 fetchAllNatives().then(natives => {
+  console.log("test ^122");
   let template = fs.readFileSync(
     path.join(__dirname, ".luacheckrc.template"),
     "utf-8"

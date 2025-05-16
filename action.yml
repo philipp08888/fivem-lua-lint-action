@@ -5,7 +5,7 @@ inputs:
   args:
     description: "luacheck arguments to pass"
     required: false
-    default: "A1"
+    default: ""
   paths:
     description: "the path name to lint lua files in"
     required: false

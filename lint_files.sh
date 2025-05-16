@@ -10,7 +10,7 @@ yarn install
 
 OLD_DIR=$(pwd)
 
-echo $OLD_DIR
+echo $OLD_DIR | grep ".luacheckrc"
 
 # build .luacheckrc file
 RESOURCES_PATH=$LUACHECK_PATHS IGNORED_SCRIPTS=$IGNORED_SCRIPTS yarn build
