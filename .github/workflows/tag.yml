@@ -6,26 +6,23 @@ on:
       - master
 
 jobs:
-  create-tag:
+  tag-latest:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v2
+      - name: Checkout code
+        uses: actions/checkout@v4
 
-      - name: Create and push tag
-        id: create_tag
+      - name: Set up Git
         run: |
-          SHORT_SHA=$(git rev-parse --short HEAD)
-          TAG_NAME="commit-$SHORT_SHA"
-          if ! git rev-parse "$TAG_NAME" >/dev/null 2>&1; then
-            git tag $TAG_NAME
-            git push origin $TAG_NAME
-          else
-            echo "Tag $TAG_NAME already exists."
-          fi
-          echo "tag_name=$TAG_NAME" >> $GITHUB_OUTPUT
+          git config user.name "github-actions"
+          git config user.email "github-actions@github.com"
 
-      - name: Lint
-        uses: philipp08888/fivem-lua-lint-action@${{ steps.create_tag.outputs.tag_name }}
+      - name: Move 'latest' tag to current commit
+        run: |
+          git tag -f latest
+          git push -f origin latest
+
+      - name: lint
+        uses: philipp08888/fivem-lua-lint-action@latest
         with:
           paths: ./tests/
