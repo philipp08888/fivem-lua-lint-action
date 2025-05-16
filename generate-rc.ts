@@ -259,6 +259,9 @@ fetchAllNatives().then(natives => {
 
   template = template.replace(/%%EXTRA%%/g, extraLibs);
 
+  const c = `${__dirname}/.luacheckrc`;
+  console.log({ c });
+
   fs.writeFileSync(path.join(__dirname, ".luacheckrc"), template);
   console.log(ansi.gray(`=`.repeat(29)));
   console.log(
