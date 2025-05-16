@@ -7,7 +7,7 @@ inputs:
     required: false
     default: "A1"
   paths:
-    description: "the path name to lint lua in"
+    description: "the path name to lint lua files in"
     required: false
     default: "A2"
   capture:
