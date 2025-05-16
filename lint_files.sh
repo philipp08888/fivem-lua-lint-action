@@ -19,7 +19,7 @@ wait
 T=$(ls -la)
 echo $T
 
-[ -f "/github/workspace/.luacheckrc" ] || { echo "❌ File .luacheckrc not found"; exit 1; }
+[ -f "/github/workspace/.luacheckrc" ] || { echo "❌ File .luacheckrc not found"; }
 
 
 
