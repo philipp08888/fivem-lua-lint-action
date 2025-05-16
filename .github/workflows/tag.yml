@@ -13,4 +13,4 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Test Workflow
-        uses: philipp08888/fivem-lua-lint-action/action.yml@master
+        uses: philipp08888/fivem-lua-lint-action@master
