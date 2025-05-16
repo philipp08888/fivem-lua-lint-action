@@ -5,23 +5,23 @@ inputs:
   args:
     description: "luacheck arguments to pass"
     required: false
-    default: "-t"
+    default: "A1"
   paths:
     description: "the path name to lint lua in"
     required: false
-    default: "."
+    default: "A2"
   capture:
     description: "capture output into a file"
     required: false
-    default: ""
+    default: "A3"
   extra_libs:
     description: "extra definitions to use, in the format of a+b+c"
     required: false
-    default: ""
+    default: "A4"
   ignored_scripts:
     description: "comma-separated list of script names that are getting ignored by the linter"
     required: false
-    default: "test123,fc_garage"
+    default: "A5"
 runs:
   using: "docker"
   image: "Dockerfile"
