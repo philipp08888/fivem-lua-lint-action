@@ -10,6 +10,8 @@ yarn install
 
 # build .luacheckrc file
 RESOURCES_PATH=$LUACHECK_PATHS IGNORED_SCRIPTS=$IGNORED_SCRIPTS yarn build
+[ -f ".luacheckrc" ] || { echo "❌ File .luacheckrc not found"; exit 1; }
+
 
 echo "outfile => $LUACHECK_CAPTURE_OUTFILE"
 

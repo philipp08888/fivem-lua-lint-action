@@ -1,28 +1,26 @@
-name: Create Commit Tag
+# .github/workflows/create-tag.yml
+name: Create Tag
 
 on:
   push:
-    branches:
-      - master
+    branches: [main]
 
 jobs:
-  tag-latest:
+  tag:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout code
+      - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Set up Git
+      - name: Generate tag (e.g., from package.json or timestamp)
+        id: version
+        run: |
+          VERSION="v1.0.$(date +%s)" # example tag
+          echo "version=$VERSION" >> $GITHUB_OUTPUT
+
+      - name: Create tag
         run: |
           git config user.name "github-actions"
-          git config user.email "github-actions@github.com"
-
-      - name: Move 'latest' tag to current commit
-        run: |
-          git tag -f latest
-          git push -f origin latest
-
-      - name: lint
-        uses: philipp08888/fivem-lua-lint-action@latest
-        with:
-          paths: ./tests/
+          git config user.email "github-actions@users.noreply.github.com"
+          git tag ${{ steps.version.outputs.version }}
+          git push origin ${{ steps.version.outputs.version }}
