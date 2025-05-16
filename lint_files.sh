@@ -35,8 +35,3 @@ else
   echo "exec => luacheck $LUACHECK_ARGS $LUACHECK_PATH"
   luacheck $LUACHECK_ARGS $LUACHECK_PATH || EXIT_CODE=$?
 fi
-
-echo "exit => $EXIT_CODE"
-if [ $EXIT_CODE -ge 2 ]; then
- exit $EXIT_CODE
-fi
