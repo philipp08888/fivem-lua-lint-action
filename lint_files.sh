@@ -1,6 +1,6 @@
 #!/bin/bash
 
-LUACHECK_ARGS="--config /luacheck-fivem/.luacheckrc $1"
+LUACHECK_ARGS="--config ./luacheckrc $1"
 LUACHECK_PATHS="$2"
 LUACHECK_CAPTURE="$3"
 LUACHECK_EXTRA_LIBS="$4"
