@@ -1,5 +1,4 @@
-# .github/workflows/create-tag.yml
-name: Create Tag
+name: CI
 
 on:
   push:
@@ -14,3 +13,5 @@ jobs:
 
       - name: Test Workflow
         uses: philipp08888/fivem-lua-lint-action@master
+        with:
+          paths: ./tests

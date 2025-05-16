@@ -9,19 +9,19 @@ inputs:
   paths:
     description: "the path name to lint lua files in"
     required: false
-    default: "A2"
+    default: "."
   capture:
     description: "capture output into a file"
     required: false
-    default: "A3"
+    default: ""
   extra_libs:
     description: "extra definitions to use, in the format of a+b+c"
     required: false
-    default: "A4"
+    default: ""
   ignored_scripts:
     description: "comma-separated list of script names that are getting ignored by the linter"
     required: false
-    default: "A5"
+    default: "fc_garage,fc_gehtnicht"
 runs:
   using: "docker"
   image: "Dockerfile"
