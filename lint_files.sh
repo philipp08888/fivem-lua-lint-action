@@ -20,18 +20,3 @@ T=$(ls -la)
 echo $T
 
 [ -f "/github/workspace/.luacheckrc" ] || { echo "❌ File .luacheckrc not found"; }
-
-
-
-echo "outfile => $LUACHECK_CAPTURE_OUTFILE"
-
-if [[ ! -z "$LUACHECK_CAPTURE_OUTFILE" ]]; then
-  echo "exec => luacheck $LUACHECK_ARGS $LUACHECK_PATH 2>>$LUACHECK_CAPTURE_OUTFILE"
-  luacheck $LUACHECK_ARGS $LUACHECK_PATH >$LUACHECK_CAPTURE_OUTFILE 2>&1 || true
-  
-  echo "exec => luacheck $LUACHECK_ARGS --formatter default $LUACHECK_PATH"
-  luacheck $LUACHECK_ARGS --formatter default $LUACHECK_PATH || EXIT_CODE=$?
-else
-  echo "exec => luacheck $LUACHECK_ARGS $LUACHECK_PATH"
-  luacheck $LUACHECK_ARGS $LUACHECK_PATH || EXIT_CODE=$?
-fi
