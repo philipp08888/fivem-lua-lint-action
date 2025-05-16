@@ -1,6 +1,6 @@
 #!/bin/bash
 
-LUACHECK_ARGS="--config ./luacheckrc $1"
+LUACHECK_ARGS="--config ./github/workspace/.luacheckrc $1"
 LUACHECK_PATHS="$2"
 LUACHECK_CAPTURE="$3"
 LUACHECK_EXTRA_LIBS="$4"
@@ -14,7 +14,10 @@ echo $OLD_DIR
 
 # build .luacheckrc file
 RESOURCES_PATH=$LUACHECK_PATHS IGNORED_SCRIPTS=$IGNORED_SCRIPTS yarn build
-[ -f ".luacheckrc" ] || { echo "❌ File .luacheckrc not found"; exit 1; }
+[ -f "/github/workspace/.luacheckrc" ] || { echo "❌ File .luacheckrc not found"; exit 1; }
+
+T=$(ls -la)
+echo $T
 
 echo "outfile => $LUACHECK_CAPTURE_OUTFILE"
 
