@@ -8,9 +8,9 @@
   "license": "MIT",
   "scripts": {
     "install": "tsc -b",
-    "build": "node ./generate-rc.js",
+    "build": "node ./src/linter.js",
     "format": "prettier --write .",
-    "watch": "tsc-watch --onSuccess \"node ./generate-rc.js\""
+    "watch": "IGNORED_SCRIPT_LIST=123 RESOURCES_FOLDER_PATH=fc_garage,fc_blackjack tsc-watch --onSuccess \"node ./src/linter.js\""
   },
   "devDependencies": {
     "prettier": "^2.3.0",
@@ -21,6 +21,7 @@
     "@types/node": "^15.9.0",
     "@types/node-fetch": "^2.5.10",
     "ansi-colors": "^4.1.1",
+    "axios": "^1.9.0",
     "dotenv": "^16.5.0",
     "envalid": "^8.0.0",
     "node-fetch": "^2.6.1",
