@@ -63,15 +63,18 @@ async function main() {
   console.log(`Found ${sharedNativeNames.length} shared natives`);
 
   writer
-    .addVariable("stds.client_natives", {
+    .addVariable("stds.cfx_cl", {
       read_globals: [...clientNativeNames, ...additionalClientFunctions]
     })
-    .addVariable("stds.server_natives", {
+    .addVariable("stds.cfx_sv", {
       read_globals: [...serverNativeNames, ...additionalServerFunctions]
     })
-    .addVariable("stds.shared_natives", {
+    .addVariable("stds.cfx", {
       read_globals: sharedNativeNames
-    });
+    })
+    .addVariable('files["**/client.lua"].std', "max+cfx+cfx_cl")
+    .addVariable('files["**/cl_*.lua"].std', "max+cfx+cfx_cl")
+    .addVariable('files["**/client/**/*.lua"].std', "max+cfx+cfx_cl");
 
   writer.writeToFile();
 }
