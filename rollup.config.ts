@@ -26,7 +26,6 @@ export default defineConfig({
   ],
   external: [
     ...builtinModules,
-    "axios",
     "dotenv",
     "envalid",
     "node-fetch",
