@@ -74,7 +74,10 @@ async function main() {
     })
     .addVariable('files["**/client.lua"].std', "max+cfx+cfx_cl")
     .addVariable('files["**/cl_*.lua"].std', "max+cfx+cfx_cl")
-    .addVariable('files["**/client/**/*.lua"].std', "max+cfx+cfx_cl");
+    .addVariable('files["**/client/**/*.lua"].std', "max+cfx+cfx_cl")
+    .addVariable('files["**/server.lua"].std', "")
+    .addVariable('files["**/sv_*.lua"].std', "")
+    .addVariable('files["**/server/**/*.lua"].std', "");
 
   writer.writeToFile();
 }
