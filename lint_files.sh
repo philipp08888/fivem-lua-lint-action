@@ -9,7 +9,7 @@ IGNORED_SCRIPTS="$5"
 yarn install
 
 # build .luacheckrc file
-RESOURCES_FOLDER_PATH=$LUACHECK_PATHS IGNORED_SCRIPT_LIST=$IGNORED_SCRIPTS yarn build
+cd /github/workspace/ && RESOURCES_FOLDER_PATH=$LUACHECK_PATHS IGNORED_SCRIPT_LIST=$IGNORED_SCRIPTS yarn build
 
 [ -f "/github/workspace/.luacheckrc" ] || { echo "❌ File .luacheckrc not found"; }
 
