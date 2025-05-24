@@ -12,7 +12,11 @@ const cfxServerFunctions = [
   "PerformHttpRequest"
 ] as const;
 
-const cfxClientFunctions = ["TriggerServerEvent"] as const;
+const cfxClientFunctions = [
+  "TriggerServerEvent",
+  "RegisterNUICallback",
+  "SendNUIMessage"
+] as const;
 
 export const additionalServerFunctions = [
   ...esxServerFunctions,
