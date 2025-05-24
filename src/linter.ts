@@ -68,6 +68,7 @@ async function main() {
       read_globals: [...clientNativeNames, ...additionalClientFunctions]
     })
     .addVariable("stds.cfx_sv", {
+      globals: ["GlobalState"],
       read_globals: [...serverNativeNames, ...additionalServerFunctions]
     })
     .addVariable("stds.cfx", {

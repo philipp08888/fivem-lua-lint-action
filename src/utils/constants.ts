@@ -15,7 +15,8 @@ const cfxServerFunctions = [
 const cfxClientFunctions = [
   "TriggerServerEvent",
   "RegisterNUICallback",
-  "SendNUIMessage"
+  "SendNUIMessage",
+  "GlobalState"
 ] as const;
 
 const sharedFunctions = [
