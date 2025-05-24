@@ -1,34 +1,21 @@
-name: Release GitHub Action
+name: Build and Commit dist
 
 on:
   push:
-    branches: [master]
+    branches: [main]
 
 jobs:
-  build-release:
+  build:
     runs-on: ubuntu-latest
-
     steps:
-      - name: Checkout repo
-        uses: actions/checkout@v4
-
-      - name: Setup Node & pnpm
-        uses: pnpm/action-setup@v2
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v2
         with:
           version: 8
-
       - run: pnpm install
-
-      - name: Build dist
-        run: pnpm build
-
-      - name: Bump version (patch)
-        run: |
-          git config --global user.name "GitHub Actions"
-          git config --global user.email "actions@github.com"
-          git add -f dist/
-          npm version patch -m "ci: bump version to %s [skip ci]"
-
-      - name: Commit & Push
-        run: |
-          git push --follow-tags
+      - run: pnpm build
+      - run: git config --global user.email "actions@github.com"
+      - run: git config --global user.name "GitHub Actions"
+      - run: git add -f dist/
+      - run: git commit -m "Build dist [skip ci]" || echo "No changes"
+      - run: git push
