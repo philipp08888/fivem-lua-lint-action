@@ -32,7 +32,7 @@ function mergeAndSortNatives(
 }
 
 async function main() {
-  const writer = new LuaWriter("./output/.luacheckrc");
+  const writer = new LuaWriter(".luacheckrc");
   const client = new RuntimeNativesClient();
 
   // TODO: Handle possible exceptions
