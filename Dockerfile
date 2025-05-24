@@ -19,4 +19,4 @@ RUN pnpm build
 
 RUN ls -la ./dist
 
-ENTRYPOINT ["pnpm", "start"]
+ENTRYPOINT ["node", "./dist/index.js"]
