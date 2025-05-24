@@ -10,6 +10,8 @@ WORKDIR /workspace
 
 COPY . .
 
+RUN ls -la
+
 RUN apk add --no-cache yarn nodejs && \
     yarn --prod --frozen-lockfile && \
     chmod +x /workspace/lint_files.sh
