@@ -1,6 +1,6 @@
 FROM node:20-alpine
 
-RUN apk add --no-cache build-base lua5.4 lua5.4-dev luarocks
+RUN apk add --no-cache lua5.4 lua5.4-dev luarocks build-base
 
 RUN luarocks install argparse \
  && luarocks install luafilesystem \
