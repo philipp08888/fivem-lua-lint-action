@@ -24,11 +24,5 @@ export default defineConfig({
     }),
     commonjs()
   ],
-  external: [
-    ...builtinModules,
-    "dotenv",
-    "envalid",
-    "node-fetch",
-    "ansi-colors"
-  ]
+  external: [...builtinModules]
 });

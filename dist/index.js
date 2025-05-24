@@ -3,14 +3,13 @@ import stream, { Readable } from 'stream';
 import path from 'path';
 import require$$3 from 'http';
 import require$$4$1 from 'https';
-import require$$0$1 from 'url';
+import require$$0$2 from 'url';
 import * as fs$1 from 'fs';
 import fs__default from 'fs';
 import crypto from 'crypto';
 import require$$4$2 from 'assert';
 import zlib from 'zlib';
 import { EventEmitter } from 'events';
-import { makeValidator, cleanEnv, str } from 'envalid';
 import * as fs from 'fs/promises';
 import { spawn } from 'child_process';
 import require$$2 from 'os';
@@ -864,6 +863,31 @@ function getDefaultExportFromCjs (x) {
 	return x && x.__esModule && Object.prototype.hasOwnProperty.call(x, 'default') ? x['default'] : x;
 }
 
+function getAugmentedNamespace(n) {
+  if (Object.prototype.hasOwnProperty.call(n, '__esModule')) return n;
+  var f = n.default;
+	if (typeof f == "function") {
+		var a = function a () {
+			if (this instanceof a) {
+        return Reflect.construct(f, arguments, this.constructor);
+			}
+			return f.apply(this, arguments);
+		};
+		a.prototype = f.prototype;
+  } else a = {};
+  Object.defineProperty(a, '__esModule', {value: true});
+	Object.keys(n).forEach(function (k) {
+		var d = Object.getOwnPropertyDescriptor(n, k);
+		Object.defineProperty(a, k, d.get ? d : {
+			enumerable: true,
+			get: function () {
+				return n[k];
+			}
+		});
+	});
+	return a;
+}
+
 var delayed_stream;
 var hasRequiredDelayed_stream;
 
@@ -1199,7 +1223,7 @@ function requireCombined_stream () {
 
 var mimeTypes = {};
 
-var require$$0 = {
+var require$$0$1 = {
 	"application/1d-interleaved-parityfec": {
 	source: "iana"
 },
@@ -11919,7 +11943,7 @@ function requireMimeDb () {
 	 * Module exports.
 	 */
 
-	mimeDb = require$$0;
+	mimeDb = require$$0$1;
 	return mimeDb;
 }
 
@@ -13687,7 +13711,7 @@ function requireForm_data () {
 	var path$1 = path;
 	var http = require$$3;
 	var https = require$$4$1;
-	var parseUrl = require$$0$1.parse;
+	var parseUrl = require$$0$2.parse;
 	var fs = fs__default;
 	var Stream = stream.Stream;
 	var mime = requireMimeTypes();
@@ -14592,7 +14616,7 @@ var transitionalDefaults = {
   clarifyTimeoutError: false
 };
 
-var URLSearchParams = require$$0$1.URLSearchParams;
+var URLSearchParams = require$$0$2.URLSearchParams;
 
 const ALPHA = 'abcdefghijklmnopqrstuvwxyz';
 
@@ -15424,7 +15448,7 @@ function requireProxyFromEnv () {
 	if (hasRequiredProxyFromEnv) return proxyFromEnv$1;
 	hasRequiredProxyFromEnv = 1;
 
-	var parseUrl = require$$0$1.parse;
+	var parseUrl = require$$0$2.parse;
 
 	var DEFAULT_PORTS = {
 	  ftp: 21,
@@ -15567,7 +15591,7 @@ var hasRequiredFollowRedirects;
 function requireFollowRedirects () {
 	if (hasRequiredFollowRedirects) return followRedirects$1.exports;
 	hasRequiredFollowRedirects = 1;
-	var url = require$$0$1;
+	var url = require$$0$2;
 	var URL = url.URL;
 	var http = require$$3;
 	var https = require$$4$1;
@@ -18290,11 +18314,11 @@ function dispatchRequest(config) {
   });
 }
 
-const validators$1 = {};
+const validators$2 = {};
 
 // eslint-disable-next-line func-names
 ['object', 'boolean', 'number', 'function', 'string', 'symbol'].forEach((type, i) => {
-  validators$1[type] = function validator(thing) {
+  validators$2[type] = function validator(thing) {
     return typeof thing === type || 'a' + (i < 1 ? 'n ' : ' ') + type;
   };
 });
@@ -18310,7 +18334,7 @@ const deprecatedWarnings = {};
  *
  * @returns {function}
  */
-validators$1.transitional = function transitional(validator, version, message) {
+validators$2.transitional = function transitional(validator, version, message) {
   function formatMessage(opt, desc) {
     return '[Axios v' + VERSION$1 + '] Transitional option \'' + opt + '\'' + desc + (message ? '. ' + message : '');
   }
@@ -18339,7 +18363,7 @@ validators$1.transitional = function transitional(validator, version, message) {
   };
 };
 
-validators$1.spelling = function spelling(correctSpelling) {
+validators$2.spelling = function spelling(correctSpelling) {
   return (value, opt) => {
     // eslint-disable-next-line no-console
     console.warn(`${opt} is likely a misspelling of ${correctSpelling}`);
@@ -18382,10 +18406,10 @@ function assertOptions(options, schema, allowUnknown) {
 
 var validator = {
   assertOptions,
-  validators: validators$1
+  validators: validators$2
 };
 
-const validators = validator.validators;
+const validators$1 = validator.validators;
 
 /**
  * Create a new instance of Axios
@@ -18454,9 +18478,9 @@ let Axios$1 = class Axios {
 
     if (transitional !== undefined) {
       validator.assertOptions(transitional, {
-        silentJSONParsing: validators.transitional(validators.boolean),
-        forcedJSONParsing: validators.transitional(validators.boolean),
-        clarifyTimeoutError: validators.transitional(validators.boolean)
+        silentJSONParsing: validators$1.transitional(validators$1.boolean),
+        forcedJSONParsing: validators$1.transitional(validators$1.boolean),
+        clarifyTimeoutError: validators$1.transitional(validators$1.boolean)
       }, false);
     }
 
@@ -18467,8 +18491,8 @@ let Axios$1 = class Axios {
         };
       } else {
         validator.assertOptions(paramsSerializer, {
-          encode: validators.function,
-          serialize: validators.function
+          encode: validators$1.function,
+          serialize: validators$1.function
         }, true);
       }
     }
@@ -18481,8 +18505,8 @@ let Axios$1 = class Axios {
     }
 
     validator.assertOptions(config, {
-      baseUrl: validators.spelling('baseURL'),
-      withXsrfToken: validators.spelling('withXSRFToken')
+      baseUrl: validators$1.spelling('baseURL'),
+      withXsrfToken: validators$1.spelling('withXSRFToken')
     }, true);
 
     // Set config.method
@@ -19050,7 +19074,1029 @@ const additionalClientFunctions = [
     ...sharedFunctions
 ];
 
-const list = makeValidator(x => {
+var dist = {};
+
+/******************************************************************************
+Copyright (c) Microsoft Corporation.
+
+Permission to use, copy, modify, and/or distribute this software for any
+purpose with or without fee is hereby granted.
+
+THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES WITH
+REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF MERCHANTABILITY
+AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY SPECIAL, DIRECT,
+INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES WHATSOEVER RESULTING FROM
+LOSS OF USE, DATA OR PROFITS, WHETHER IN AN ACTION OF CONTRACT, NEGLIGENCE OR
+OTHER TORTIOUS ACTION, ARISING OUT OF OR IN CONNECTION WITH THE USE OR
+PERFORMANCE OF THIS SOFTWARE.
+***************************************************************************** */
+/* global Reflect, Promise, SuppressedError, Symbol */
+
+var extendStatics = function(d, b) {
+    extendStatics = Object.setPrototypeOf ||
+        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+        function (d, b) { for (var p in b) if (Object.prototype.hasOwnProperty.call(b, p)) d[p] = b[p]; };
+    return extendStatics(d, b);
+};
+
+function __extends(d, b) {
+    if (typeof b !== "function" && b !== null)
+        throw new TypeError("Class extends value " + String(b) + " is not a constructor or null");
+    extendStatics(d, b);
+    function __() { this.constructor = d; }
+    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+}
+
+var __assign = function() {
+    __assign = Object.assign || function __assign(t) {
+        for (var s, i = 1, n = arguments.length; i < n; i++) {
+            s = arguments[i];
+            for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p)) t[p] = s[p];
+        }
+        return t;
+    };
+    return __assign.apply(this, arguments);
+};
+
+function __rest(s, e) {
+    var t = {};
+    for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p) && e.indexOf(p) < 0)
+        t[p] = s[p];
+    if (s != null && typeof Object.getOwnPropertySymbols === "function")
+        for (var i = 0, p = Object.getOwnPropertySymbols(s); i < p.length; i++) {
+            if (e.indexOf(p[i]) < 0 && Object.prototype.propertyIsEnumerable.call(s, p[i]))
+                t[p[i]] = s[p[i]];
+        }
+    return t;
+}
+
+function __decorate(decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+}
+
+function __param(paramIndex, decorator) {
+    return function (target, key) { decorator(target, key, paramIndex); }
+}
+
+function __esDecorate(ctor, descriptorIn, decorators, contextIn, initializers, extraInitializers) {
+    function accept(f) { if (f !== void 0 && typeof f !== "function") throw new TypeError("Function expected"); return f; }
+    var kind = contextIn.kind, key = kind === "getter" ? "get" : kind === "setter" ? "set" : "value";
+    var target = !descriptorIn && ctor ? contextIn["static"] ? ctor : ctor.prototype : null;
+    var descriptor = descriptorIn || (target ? Object.getOwnPropertyDescriptor(target, contextIn.name) : {});
+    var _, done = false;
+    for (var i = decorators.length - 1; i >= 0; i--) {
+        var context = {};
+        for (var p in contextIn) context[p] = p === "access" ? {} : contextIn[p];
+        for (var p in contextIn.access) context.access[p] = contextIn.access[p];
+        context.addInitializer = function (f) { if (done) throw new TypeError("Cannot add initializers after decoration has completed"); extraInitializers.push(accept(f || null)); };
+        var result = (0, decorators[i])(kind === "accessor" ? { get: descriptor.get, set: descriptor.set } : descriptor[key], context);
+        if (kind === "accessor") {
+            if (result === void 0) continue;
+            if (result === null || typeof result !== "object") throw new TypeError("Object expected");
+            if (_ = accept(result.get)) descriptor.get = _;
+            if (_ = accept(result.set)) descriptor.set = _;
+            if (_ = accept(result.init)) initializers.unshift(_);
+        }
+        else if (_ = accept(result)) {
+            if (kind === "field") initializers.unshift(_);
+            else descriptor[key] = _;
+        }
+    }
+    if (target) Object.defineProperty(target, contextIn.name, descriptor);
+    done = true;
+}
+function __runInitializers(thisArg, initializers, value) {
+    var useValue = arguments.length > 2;
+    for (var i = 0; i < initializers.length; i++) {
+        value = useValue ? initializers[i].call(thisArg, value) : initializers[i].call(thisArg);
+    }
+    return useValue ? value : void 0;
+}
+function __propKey(x) {
+    return typeof x === "symbol" ? x : "".concat(x);
+}
+function __setFunctionName(f, name, prefix) {
+    if (typeof name === "symbol") name = name.description ? "[".concat(name.description, "]") : "";
+    return Object.defineProperty(f, "name", { configurable: true, value: prefix ? "".concat(prefix, " ", name) : name });
+}
+function __metadata(metadataKey, metadataValue) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(metadataKey, metadataValue);
+}
+
+function __awaiter(thisArg, _arguments, P, generator) {
+    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+}
+
+function __generator(thisArg, body) {
+    var _ = { label: 0, sent: function() { if (t[0] & 1) throw t[1]; return t[1]; }, trys: [], ops: [] }, f, y, t, g;
+    return g = { next: verb(0), "throw": verb(1), "return": verb(2) }, typeof Symbol === "function" && (g[Symbol.iterator] = function() { return this; }), g;
+    function verb(n) { return function (v) { return step([n, v]); }; }
+    function step(op) {
+        if (f) throw new TypeError("Generator is already executing.");
+        while (g && (g = 0, op[0] && (_ = 0)), _) try {
+            if (f = 1, y && (t = op[0] & 2 ? y["return"] : op[0] ? y["throw"] || ((t = y["return"]) && t.call(y), 0) : y.next) && !(t = t.call(y, op[1])).done) return t;
+            if (y = 0, t) op = [op[0] & 2, t.value];
+            switch (op[0]) {
+                case 0: case 1: t = op; break;
+                case 4: _.label++; return { value: op[1], done: false };
+                case 5: _.label++; y = op[1]; op = [0]; continue;
+                case 7: op = _.ops.pop(); _.trys.pop(); continue;
+                default:
+                    if (!(t = _.trys, t = t.length > 0 && t[t.length - 1]) && (op[0] === 6 || op[0] === 2)) { _ = 0; continue; }
+                    if (op[0] === 3 && (!t || (op[1] > t[0] && op[1] < t[3]))) { _.label = op[1]; break; }
+                    if (op[0] === 6 && _.label < t[1]) { _.label = t[1]; t = op; break; }
+                    if (t && _.label < t[2]) { _.label = t[2]; _.ops.push(op); break; }
+                    if (t[2]) _.ops.pop();
+                    _.trys.pop(); continue;
+            }
+            op = body.call(thisArg, _);
+        } catch (e) { op = [6, e]; y = 0; } finally { f = t = 0; }
+        if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
+    }
+}
+
+var __createBinding = Object.create ? (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    var desc = Object.getOwnPropertyDescriptor(m, k);
+    if (!desc || ("get" in desc ? !m.__esModule : desc.writable || desc.configurable)) {
+        desc = { enumerable: true, get: function() { return m[k]; } };
+    }
+    Object.defineProperty(o, k2, desc);
+}) : (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    o[k2] = m[k];
+});
+
+function __exportStar(m, o) {
+    for (var p in m) if (p !== "default" && !Object.prototype.hasOwnProperty.call(o, p)) __createBinding(o, m, p);
+}
+
+function __values(o) {
+    var s = typeof Symbol === "function" && Symbol.iterator, m = s && o[s], i = 0;
+    if (m) return m.call(o);
+    if (o && typeof o.length === "number") return {
+        next: function () {
+            if (o && i >= o.length) o = void 0;
+            return { value: o && o[i++], done: !o };
+        }
+    };
+    throw new TypeError(s ? "Object is not iterable." : "Symbol.iterator is not defined.");
+}
+
+function __read(o, n) {
+    var m = typeof Symbol === "function" && o[Symbol.iterator];
+    if (!m) return o;
+    var i = m.call(o), r, ar = [], e;
+    try {
+        while ((n === void 0 || n-- > 0) && !(r = i.next()).done) ar.push(r.value);
+    }
+    catch (error) { e = { error: error }; }
+    finally {
+        try {
+            if (r && !r.done && (m = i["return"])) m.call(i);
+        }
+        finally { if (e) throw e.error; }
+    }
+    return ar;
+}
+
+/** @deprecated */
+function __spread() {
+    for (var ar = [], i = 0; i < arguments.length; i++)
+        ar = ar.concat(__read(arguments[i]));
+    return ar;
+}
+
+/** @deprecated */
+function __spreadArrays() {
+    for (var s = 0, i = 0, il = arguments.length; i < il; i++) s += arguments[i].length;
+    for (var r = Array(s), k = 0, i = 0; i < il; i++)
+        for (var a = arguments[i], j = 0, jl = a.length; j < jl; j++, k++)
+            r[k] = a[j];
+    return r;
+}
+
+function __spreadArray(to, from, pack) {
+    if (pack || arguments.length === 2) for (var i = 0, l = from.length, ar; i < l; i++) {
+        if (ar || !(i in from)) {
+            if (!ar) ar = Array.prototype.slice.call(from, 0, i);
+            ar[i] = from[i];
+        }
+    }
+    return to.concat(ar || Array.prototype.slice.call(from));
+}
+
+function __await(v) {
+    return this instanceof __await ? (this.v = v, this) : new __await(v);
+}
+
+function __asyncGenerator(thisArg, _arguments, generator) {
+    if (!Symbol.asyncIterator) throw new TypeError("Symbol.asyncIterator is not defined.");
+    var g = generator.apply(thisArg, _arguments || []), i, q = [];
+    return i = {}, verb("next"), verb("throw"), verb("return"), i[Symbol.asyncIterator] = function () { return this; }, i;
+    function verb(n) { if (g[n]) i[n] = function (v) { return new Promise(function (a, b) { q.push([n, v, a, b]) > 1 || resume(n, v); }); }; }
+    function resume(n, v) { try { step(g[n](v)); } catch (e) { settle(q[0][3], e); } }
+    function step(r) { r.value instanceof __await ? Promise.resolve(r.value.v).then(fulfill, reject) : settle(q[0][2], r); }
+    function fulfill(value) { resume("next", value); }
+    function reject(value) { resume("throw", value); }
+    function settle(f, v) { if (f(v), q.shift(), q.length) resume(q[0][0], q[0][1]); }
+}
+
+function __asyncDelegator(o) {
+    var i, p;
+    return i = {}, verb("next"), verb("throw", function (e) { throw e; }), verb("return"), i[Symbol.iterator] = function () { return this; }, i;
+    function verb(n, f) { i[n] = o[n] ? function (v) { return (p = !p) ? { value: __await(o[n](v)), done: false } : f ? f(v) : v; } : f; }
+}
+
+function __asyncValues(o) {
+    if (!Symbol.asyncIterator) throw new TypeError("Symbol.asyncIterator is not defined.");
+    var m = o[Symbol.asyncIterator], i;
+    return m ? m.call(o) : (o = typeof __values === "function" ? __values(o) : o[Symbol.iterator](), i = {}, verb("next"), verb("throw"), verb("return"), i[Symbol.asyncIterator] = function () { return this; }, i);
+    function verb(n) { i[n] = o[n] && function (v) { return new Promise(function (resolve, reject) { v = o[n](v), settle(resolve, reject, v.done, v.value); }); }; }
+    function settle(resolve, reject, d, v) { Promise.resolve(v).then(function(v) { resolve({ value: v, done: d }); }, reject); }
+}
+
+function __makeTemplateObject(cooked, raw) {
+    if (Object.defineProperty) { Object.defineProperty(cooked, "raw", { value: raw }); } else { cooked.raw = raw; }
+    return cooked;
+}
+var __setModuleDefault = Object.create ? (function(o, v) {
+    Object.defineProperty(o, "default", { enumerable: true, value: v });
+}) : function(o, v) {
+    o["default"] = v;
+};
+
+function __importStar(mod) {
+    if (mod && mod.__esModule) return mod;
+    var result = {};
+    if (mod != null) for (var k in mod) if (k !== "default" && Object.prototype.hasOwnProperty.call(mod, k)) __createBinding(result, mod, k);
+    __setModuleDefault(result, mod);
+    return result;
+}
+
+function __importDefault(mod) {
+    return (mod && mod.__esModule) ? mod : { default: mod };
+}
+
+function __classPrivateFieldGet(receiver, state, kind, f) {
+    if (kind === "a" && !f) throw new TypeError("Private accessor was defined without a getter");
+    if (typeof state === "function" ? receiver !== state || !f : !state.has(receiver)) throw new TypeError("Cannot read private member from an object whose class did not declare it");
+    return kind === "m" ? f : kind === "a" ? f.call(receiver) : f ? f.value : state.get(receiver);
+}
+
+function __classPrivateFieldSet(receiver, state, value, kind, f) {
+    if (kind === "m") throw new TypeError("Private method is not writable");
+    if (kind === "a" && !f) throw new TypeError("Private accessor was defined without a setter");
+    if (typeof state === "function" ? receiver !== state || !f : !state.has(receiver)) throw new TypeError("Cannot write private member to an object whose class did not declare it");
+    return (kind === "a" ? f.call(receiver, value) : f ? f.value = value : state.set(receiver, value)), value;
+}
+
+function __classPrivateFieldIn(state, receiver) {
+    if (receiver === null || (typeof receiver !== "object" && typeof receiver !== "function")) throw new TypeError("Cannot use 'in' operator on non-object");
+    return typeof state === "function" ? receiver === state : state.has(receiver);
+}
+
+function __addDisposableResource(env, value, async) {
+    if (value !== null && value !== void 0) {
+        if (typeof value !== "object" && typeof value !== "function") throw new TypeError("Object expected.");
+        var dispose;
+        if (async) {
+            if (!Symbol.asyncDispose) throw new TypeError("Symbol.asyncDispose is not defined.");
+            dispose = value[Symbol.asyncDispose];
+        }
+        if (dispose === void 0) {
+            if (!Symbol.dispose) throw new TypeError("Symbol.dispose is not defined.");
+            dispose = value[Symbol.dispose];
+        }
+        if (typeof dispose !== "function") throw new TypeError("Object not disposable.");
+        env.stack.push({ value: value, dispose: dispose, async: async });
+    }
+    else if (async) {
+        env.stack.push({ async: true });
+    }
+    return value;
+}
+
+var _SuppressedError = typeof SuppressedError === "function" ? SuppressedError : function (error, suppressed, message) {
+    var e = new Error(message);
+    return e.name = "SuppressedError", e.error = error, e.suppressed = suppressed, e;
+};
+
+function __disposeResources(env) {
+    function fail(e) {
+        env.error = env.hasError ? new _SuppressedError(e, env.error, "An error was suppressed during disposal.") : e;
+        env.hasError = true;
+    }
+    function next() {
+        while (env.stack.length) {
+            var rec = env.stack.pop();
+            try {
+                var result = rec.dispose && rec.dispose.call(rec.value);
+                if (rec.async) return Promise.resolve(result).then(next, function(e) { fail(e); return next(); });
+            }
+            catch (e) {
+                fail(e);
+            }
+        }
+        if (env.hasError) throw env.error;
+    }
+    return next();
+}
+
+var _tslib = {
+    __extends: __extends,
+    __assign: __assign,
+    __rest: __rest,
+    __decorate: __decorate,
+    __param: __param,
+    __metadata: __metadata,
+    __awaiter: __awaiter,
+    __generator: __generator,
+    __createBinding: __createBinding,
+    __exportStar: __exportStar,
+    __values: __values,
+    __read: __read,
+    __spread: __spread,
+    __spreadArrays: __spreadArrays,
+    __spreadArray: __spreadArray,
+    __await: __await,
+    __asyncGenerator: __asyncGenerator,
+    __asyncDelegator: __asyncDelegator,
+    __asyncValues: __asyncValues,
+    __makeTemplateObject: __makeTemplateObject,
+    __importStar: __importStar,
+    __importDefault: __importDefault,
+    __classPrivateFieldGet: __classPrivateFieldGet,
+    __classPrivateFieldSet: __classPrivateFieldSet,
+    __classPrivateFieldIn: __classPrivateFieldIn,
+    __addDisposableResource: __addDisposableResource,
+    __disposeResources: __disposeResources,
+};
+
+var _tslib$1 = /*#__PURE__*/Object.freeze({
+  __proto__: null,
+  __addDisposableResource: __addDisposableResource,
+  get __assign () { return __assign; },
+  __asyncDelegator: __asyncDelegator,
+  __asyncGenerator: __asyncGenerator,
+  __asyncValues: __asyncValues,
+  __await: __await,
+  __awaiter: __awaiter,
+  __classPrivateFieldGet: __classPrivateFieldGet,
+  __classPrivateFieldIn: __classPrivateFieldIn,
+  __classPrivateFieldSet: __classPrivateFieldSet,
+  __createBinding: __createBinding,
+  __decorate: __decorate,
+  __disposeResources: __disposeResources,
+  __esDecorate: __esDecorate,
+  __exportStar: __exportStar,
+  __extends: __extends,
+  __generator: __generator,
+  __importDefault: __importDefault,
+  __importStar: __importStar,
+  __makeTemplateObject: __makeTemplateObject,
+  __metadata: __metadata,
+  __param: __param,
+  __propKey: __propKey,
+  __read: __read,
+  __rest: __rest,
+  __runInitializers: __runInitializers,
+  __setFunctionName: __setFunctionName,
+  __spread: __spread,
+  __spreadArray: __spreadArray,
+  __spreadArrays: __spreadArrays,
+  __values: __values,
+  default: _tslib
+});
+
+var require$$0 = /*@__PURE__*/getAugmentedNamespace(_tslib$1);
+
+var envalid = {};
+
+var core = {};
+
+var errors = {};
+
+var hasRequiredErrors;
+
+function requireErrors () {
+	if (hasRequiredErrors) return errors;
+	hasRequiredErrors = 1;
+	// Surprisingly involved error subclassing
+	// See https://stackoverflow.com/questions/41102060/typescript-extending-error-class
+	Object.defineProperty(errors, "__esModule", { value: true });
+	errors.EnvMissingError = errors.EnvError = void 0;
+	var tslib_1 = require$$0;
+	var EnvError = /** @class */ (function (_super) {
+	    tslib_1.__extends(EnvError, _super);
+	    function EnvError(message) {
+	        var _newTarget = this.constructor;
+	        var _this = _super.call(this, message) || this;
+	        Object.setPrototypeOf(_this, _newTarget.prototype);
+	        Error.captureStackTrace(_this, EnvError);
+	        _this.name = _this.constructor.name;
+	        return _this;
+	    }
+	    return EnvError;
+	}(TypeError));
+	errors.EnvError = EnvError;
+	var EnvMissingError = /** @class */ (function (_super) {
+	    tslib_1.__extends(EnvMissingError, _super);
+	    function EnvMissingError(message) {
+	        var _newTarget = this.constructor;
+	        var _this = _super.call(this, message) || this;
+	        Object.setPrototypeOf(_this, _newTarget.prototype);
+	        Error.captureStackTrace(_this, EnvMissingError);
+	        _this.name = _this.constructor.name;
+	        return _this;
+	    }
+	    return EnvMissingError;
+	}(ReferenceError));
+	errors.EnvMissingError = EnvMissingError;
+	
+	return errors;
+}
+
+var reporter = {};
+
+var hasRequiredReporter;
+
+function requireReporter () {
+	if (hasRequiredReporter) return reporter;
+	hasRequiredReporter = 1;
+	(function (exports) {
+		var _a;
+		Object.defineProperty(exports, "__esModule", { value: true });
+		exports.defaultReporter = exports.envalidErrorFormatter = void 0;
+		/* eslint-disable no-console */
+		var errors_1 = /*@__PURE__*/ requireErrors();
+		var defaultLogger = console.error.bind(console);
+		// Apply ANSI colors to the reporter output only if we detect that we're running in Node
+		var isNode = !!(typeof process === 'object' && ((_a = process === null || process === void 0 ? void 0 : process.versions) === null || _a === void 0 ? void 0 : _a.node));
+		var colorWith = function (colorCode) { return function (str) {
+		    return isNode ? "\u001B[".concat(colorCode, "m").concat(str, "\u001B[0m") : str;
+		}; };
+		var colors = {
+		    blue: colorWith('34'),
+		    white: colorWith('37'),
+		    yellow: colorWith('33'),
+		};
+		var RULE = colors.white('================================');
+		// Takes the provided errors, formats them all to an output string, and passes that string output to the
+		// provided "logger" function.
+		//
+		// This is exposed in the public API so third-party reporters can leverage this logic if desired
+		var envalidErrorFormatter = function (errors, logger) {
+		    if (logger === void 0) { logger = defaultLogger; }
+		    var missingVarsOutput = [];
+		    var invalidVarsOutput = [];
+		    for (var _i = 0, _a = Object.entries(errors); _i < _a.length; _i++) {
+		        var _b = _a[_i], k = _b[0], err = _b[1];
+		        if (err instanceof errors_1.EnvMissingError) {
+		            missingVarsOutput.push("    ".concat(colors.blue(k), ": ").concat(err.message || '(required)'));
+		        }
+		        else
+		            invalidVarsOutput.push("    ".concat(colors.blue(k), ": ").concat((err === null || err === void 0 ? void 0 : err.message) || '(invalid format)'));
+		    }
+		    // Prepend "header" output for each section of the output:
+		    if (invalidVarsOutput.length) {
+		        invalidVarsOutput.unshift(" ".concat(colors.yellow('Invalid'), " environment variables:"));
+		    }
+		    if (missingVarsOutput.length) {
+		        missingVarsOutput.unshift(" ".concat(colors.yellow('Missing'), " environment variables:"));
+		    }
+		    var output = [
+		        RULE,
+		        invalidVarsOutput.sort().join('\n'),
+		        missingVarsOutput.sort().join('\n'),
+		        RULE,
+		    ]
+		        .filter(function (x) { return !!x; })
+		        .join('\n');
+		    logger(output);
+		};
+		exports.envalidErrorFormatter = envalidErrorFormatter;
+		var defaultReporter = function (_a, _b) {
+		    var _c = _a.errors, errors = _c === void 0 ? {} : _c;
+		    var _d = _b === void 0 ? { logger: defaultLogger } : _b, onError = _d.onError, logger = _d.logger;
+		    if (!Object.keys(errors).length)
+		        return;
+		    (0, exports.envalidErrorFormatter)(errors, logger);
+		    if (onError) {
+		        onError(errors);
+		    }
+		    else if (isNode) {
+		        logger(colors.yellow('\n Exiting with error code 1'));
+		        process.exit(1);
+		    }
+		    else {
+		        throw new TypeError('Environment validation failed');
+		    }
+		};
+		exports.defaultReporter = defaultReporter;
+		
+	} (reporter));
+	return reporter;
+}
+
+var hasRequiredCore;
+
+function requireCore () {
+	if (hasRequiredCore) return core;
+	hasRequiredCore = 1;
+	(function (exports) {
+		Object.defineProperty(exports, "__esModule", { value: true });
+		exports.getSanitizedEnv = exports.testOnlySymbol = void 0;
+		var errors_1 = /*@__PURE__*/ requireErrors();
+		var reporter_1 = /*@__PURE__*/ requireReporter();
+		exports.testOnlySymbol = Symbol('envalid - test only');
+		/**
+		 * Validate a single env var, given a spec object
+		 *
+		 * @throws EnvError - If validation is unsuccessful
+		 * @return - The cleaned value
+		 */
+		function validateVar(_a) {
+		    var spec = _a.spec, name = _a.name, rawValue = _a.rawValue;
+		    if (typeof spec._parse !== 'function') {
+		        throw new errors_1.EnvError("Invalid spec for \"".concat(name, "\""));
+		    }
+		    var value = spec._parse(rawValue);
+		    if (spec.choices) {
+		        if (!Array.isArray(spec.choices)) {
+		            throw new TypeError("\"choices\" must be an array (in spec for \"".concat(name, "\")"));
+		        }
+		        else if (!spec.choices.includes(value)) {
+		            throw new errors_1.EnvError("Value \"".concat(value, "\" not in choices [").concat(spec.choices, "]"));
+		        }
+		    }
+		    if (value == null)
+		        throw new errors_1.EnvError("Invalid value for env var \"".concat(name, "\""));
+		    return value;
+		}
+		// Format a string error message for when a required env var is missing
+		function formatSpecDescription(spec) {
+		    var egText = spec.example ? " (eg. \"".concat(spec.example, "\")") : '';
+		    var docsText = spec.docs ? ". See ".concat(spec.docs) : '';
+		    return "".concat(spec.desc).concat(egText).concat(docsText);
+		}
+		var readRawEnvValue = function (env, k) {
+		    return env[k];
+		};
+		var isTestOnlySymbol = function (value) { return value === exports.testOnlySymbol; };
+		/**
+		 * Perform the central validation/sanitization logic on the full environment object
+		 */
+		function getSanitizedEnv(environment, specs, options) {
+		    if (options === void 0) { options = {}; }
+		    var cleanedEnv = {};
+		    var castedSpecs = specs;
+		    var errors = {};
+		    var varKeys = Object.keys(castedSpecs);
+		    var rawNodeEnv = readRawEnvValue(environment, 'NODE_ENV');
+		    for (var _i = 0, varKeys_1 = varKeys; _i < varKeys_1.length; _i++) {
+		        var k = varKeys_1[_i];
+		        var spec = castedSpecs[k];
+		        var rawValue = readRawEnvValue(environment, k);
+		        // If no value was given and default/devDefault were provided, return the appropriate default
+		        // value without passing it through validation
+		        if (rawValue === undefined) {
+		            // Use devDefault values only if NODE_ENV was explicitly set, and isn't 'production'
+		            var usingDevDefault = rawNodeEnv && rawNodeEnv !== 'production' && spec.hasOwnProperty('devDefault');
+		            if (usingDevDefault) {
+		                cleanedEnv[k] = spec.devDefault;
+		                if (isTestOnlySymbol(spec.devDefault) && rawNodeEnv != 'test') {
+		                    throw new errors_1.EnvMissingError(formatSpecDescription(spec));
+		                }
+		                continue;
+		            }
+		            if ('default' in spec) {
+		                cleanedEnv[k] = spec.default;
+		                continue;
+		            }
+		        }
+		        try {
+		            if (rawValue === undefined) {
+		                cleanedEnv[k] = undefined;
+		                throw new errors_1.EnvMissingError(formatSpecDescription(spec));
+		            }
+		            else {
+		                cleanedEnv[k] = validateVar({ name: k, spec: spec, rawValue: rawValue });
+		            }
+		        }
+		        catch (err) {
+		            if ((options === null || options === void 0 ? void 0 : options.reporter) === null)
+		                throw err;
+		            if (err instanceof Error)
+		                errors[k] = err;
+		        }
+		    }
+		    var reporter = (options === null || options === void 0 ? void 0 : options.reporter) || reporter_1.defaultReporter;
+		    reporter({ errors: errors, env: cleanedEnv });
+		    return cleanedEnv;
+		}
+		exports.getSanitizedEnv = getSanitizedEnv;
+		
+	} (core));
+	return core;
+}
+
+var middleware = {};
+
+var hasRequiredMiddleware;
+
+function requireMiddleware () {
+	if (hasRequiredMiddleware) return middleware;
+	hasRequiredMiddleware = 1;
+	(function (exports) {
+		Object.defineProperty(exports, "__esModule", { value: true });
+		exports.applyDefaultMiddleware = exports.accessorMiddleware = exports.strictProxyMiddleware = void 0;
+		var strictProxyMiddleware = function (envObj, rawEnv, options) {
+		    if (options === void 0) { options = {}; }
+		    var _a = options.extraInspectables, extraInspectables = _a === void 0 ? [] : _a;
+		    var inspectables = [
+		        'length',
+		        'inspect',
+		        'hasOwnProperty',
+		        'toJSON',
+		        Symbol.toStringTag,
+		        Symbol.iterator,
+		        // For jest
+		        'asymmetricMatch',
+		        'nodeType',
+		        // For react-refresh, see #150
+		        '$$typeof',
+		        // For libs that use `then` checks to see if objects are Promises (see #74):
+		        'then',
+		        // For usage with TypeScript esModuleInterop flag
+		        '__esModule',
+		    ];
+		    var inspectSymbolStrings = ['Symbol(util.inspect.custom)', 'Symbol(nodejs.util.inspect.custom)'];
+		    return new Proxy(envObj, {
+		        get: function (target, name) {
+		            var _a;
+		            // These checks are needed because calling console.log on a
+		            // proxy that throws crashes the entire process. This permits access on
+		            // the necessary properties for `console.log(envObj)`, `envObj.length`,
+		            // `envObj.hasOwnProperty('string')` to work.
+		            if (inspectables.includes(name) ||
+		                inspectSymbolStrings.includes(name.toString()) ||
+		                extraInspectables.includes(name)) {
+		                // @ts-expect-error TS doesn't like symbol types as indexers
+		                return target[name];
+		            }
+		            var varExists = target.hasOwnProperty(name);
+		            if (!varExists) {
+		                if (typeof rawEnv === 'object' && ((_a = rawEnv === null || rawEnv === void 0 ? void 0 : rawEnv.hasOwnProperty) === null || _a === void 0 ? void 0 : _a.call(rawEnv, name))) {
+		                    throw new ReferenceError("[envalid] Env var ".concat(name, " was accessed but not validated. This var is set in the environment; please add an envalid validator for it."));
+		                }
+		                throw new ReferenceError("[envalid] Env var not found: ".concat(name));
+		            }
+		            return target[name];
+		        },
+		        set: function (_target, name) {
+		            throw new TypeError("[envalid] Attempt to mutate environment value: ".concat(name));
+		        },
+		    });
+		};
+		exports.strictProxyMiddleware = strictProxyMiddleware;
+		var accessorMiddleware = function (envObj, rawEnv) {
+		    // Attach is{Prod/Dev/Test} properties for more readable NODE_ENV checks
+		    // Note that isDev and isProd are just aliases to isDevelopment and isProduction
+		    // @ts-ignore attempt to read NODE_ENV even if it's not in the spec
+		    var computedNodeEnv = envObj.NODE_ENV || rawEnv.NODE_ENV;
+		    // If NODE_ENV is not set, assume production
+		    var isProd = !computedNodeEnv || computedNodeEnv === 'production';
+		    Object.defineProperties(envObj, {
+		        isDevelopment: { value: computedNodeEnv === 'development' },
+		        isDev: { value: computedNodeEnv === 'development' },
+		        isProduction: { value: isProd },
+		        isProd: { value: isProd },
+		        isTest: { value: computedNodeEnv === 'test' },
+		    });
+		    return envObj;
+		};
+		exports.accessorMiddleware = accessorMiddleware;
+		var applyDefaultMiddleware = function (cleanedEnv, rawEnv) {
+		    // Note: Ideally we would declare the default middlewares in an array and apply them in series with
+		    // a generic pipe() function. However, a generically typed variadic pipe() appears to not be possible
+		    // in TypeScript as of 4.x, so we just manually apply them below. See
+		    // https://github.com/microsoft/TypeScript/pull/39094#issuecomment-647042984
+		    return (0, exports.strictProxyMiddleware)((0, exports.accessorMiddleware)(cleanedEnv, rawEnv), rawEnv);
+		};
+		exports.applyDefaultMiddleware = applyDefaultMiddleware;
+		
+	} (middleware));
+	return middleware;
+}
+
+var hasRequiredEnvalid;
+
+function requireEnvalid () {
+	if (hasRequiredEnvalid) return envalid;
+	hasRequiredEnvalid = 1;
+	Object.defineProperty(envalid, "__esModule", { value: true });
+	envalid.testOnly = envalid.customCleanEnv = envalid.cleanEnv = void 0;
+	var core_1 = /*@__PURE__*/ requireCore();
+	var middleware_1 = /*@__PURE__*/ requireMiddleware();
+	/**
+	 * Returns a sanitized, immutable environment object. _Only_ the env vars
+	 * specified in the `validators` parameter will be accessible on the returned
+	 * object.
+	 * @param environment An object containing your env vars (eg. process.env).
+	 * @param specs An object that specifies the format of required vars.
+	 * @param options An object that specifies options for cleanEnv.
+	 */
+	function cleanEnv(environment, specs, options) {
+	    if (options === void 0) { options = {}; }
+	    var cleaned = (0, core_1.getSanitizedEnv)(environment, specs, options);
+	    return Object.freeze((0, middleware_1.applyDefaultMiddleware)(cleaned, environment));
+	}
+	envalid.cleanEnv = cleanEnv;
+	/**
+	 * Returns a sanitized, immutable environment object, and passes it through a custom
+	 * applyMiddleware function before being frozen. Most users won't need the flexibility of custom
+	 * middleware; prefer cleanEnv() unless you're sure you need it
+	 *
+	 * @param environment An object containing your env vars (eg. process.env).
+	 * @param specs An object that specifies the format of required vars.
+	 * @param applyMiddleware A function that applies transformations to the cleaned env object
+	 * @param options An object that specifies options for cleanEnv.
+	 */
+	function customCleanEnv(environment, specs, applyMiddleware, options) {
+	    if (options === void 0) { options = {}; }
+	    var cleaned = (0, core_1.getSanitizedEnv)(environment, specs, options);
+	    return Object.freeze(applyMiddleware(cleaned, environment));
+	}
+	envalid.customCleanEnv = customCleanEnv;
+	/**
+	 * Utility function for providing default values only when NODE_ENV=test
+	 *
+	 * For more context, see https://github.com/af/envalid/issues/32
+	 */
+	var testOnly = function (defaultValueForTests) {
+	    return process.env.NODE_ENV === 'test' ? defaultValueForTests : core_1.testOnlySymbol; // T is not strictly correct, but prevents type errors during usage
+	};
+	envalid.testOnly = testOnly;
+	
+	return envalid;
+}
+
+var types = {};
+
+var hasRequiredTypes;
+
+function requireTypes () {
+	if (hasRequiredTypes) return types;
+	hasRequiredTypes = 1;
+	Object.defineProperty(types, "__esModule", { value: true });
+	
+	return types;
+}
+
+var validators = {};
+
+var makers = {};
+
+var hasRequiredMakers;
+
+function requireMakers () {
+	if (hasRequiredMakers) return makers;
+	hasRequiredMakers = 1;
+	Object.defineProperty(makers, "__esModule", { value: true });
+	makers.makeStructuredValidator = makers.makeExactValidator = makers.makeValidator = void 0;
+	var tslib_1 = require$$0;
+	var internalMakeValidator = function (parseFn) {
+	    return function (spec) { return (tslib_1.__assign(tslib_1.__assign({}, spec), { _parse: parseFn })); };
+	};
+	/**
+	 * Creates a validator which can output subtypes of `BaseT`. E.g.:
+	 *
+	 * ```ts
+	 * const int = makeValidator<number>((input: string) => {
+	 *   // Implementation details
+	 * })
+	 * const MAX_RETRIES = int({ choices: [1, 2, 3, 4] })
+	 * // Narrows down output type to 1 | 2 | 3 | 4
+	 * ```
+	 *
+	 * @param parseFn - A function to parse and validate input.
+	 * @returns A validator which output type is narrowed-down to a subtype of `BaseT`
+	 */
+	var makeValidator = function (parseFn) {
+	    return internalMakeValidator(parseFn);
+	};
+	makers.makeValidator = makeValidator;
+	/**
+	 * Creates a validator which output type is exactly T:
+	 *
+	 * ```ts
+	 * const int = makeExactValidator<number>((input: string) => {
+	 *   // Implementation details
+	 * })
+	 * const MAX_RETRIES = int({ choices: [1, 2, 3, 4] })
+	 * // Output type 'number'
+	 * ```
+	 *
+	 * @param parseFn - A function to parse and validate input.
+	 * @returns A validator which output type is exactly `T`
+	 */
+	var makeExactValidator = function (parseFn) {
+	    return internalMakeValidator(parseFn);
+	};
+	makers.makeExactValidator = makeExactValidator;
+	/**
+	 * This validator is meant for inputs which can produce arbitrary output types (e.g. json).
+	 * The typing logic behaves differently from other makers:
+	 *
+	 * - makeStructuredValidator has no type parameter.
+	 * - When no types can be inferred from context, output type defaults to any.
+	 * - Otherwise, infers type from `default` or `devDefault`.
+	 * - Also generated validators have an output type parameter.
+	 * - Finally, the generated validators disallow `choices` parameter.
+	 *
+	 * Below is an example of a validator for query parameters (e.g. `option1=foo&option2=bar`):
+	 *
+	 * ```ts
+	 * const queryParams = makeStructuredValidator((input: string) => {
+	 *   const params = new URLSearchParams(input)
+	 *   return Object.fromEntries(params.entries())
+	 * })
+	 * const OPTIONS1 = queryParams()
+	 * // Output type 'any'
+	 * const OPTIONS2 = queryParams({ default: { option1: 'foo', option2: 'bar' } })
+	 * // Output type '{ option1: string, option2: string }'
+	 * const OPTIONS3 = queryParams<{ option1?: string; option2?: string }>({
+	 *   default: { option1: 'foo', option2: 'bar' },
+	 * })
+	 * // Output type '{ option1?: string, option2?: string }'
+	 * ```
+	 *
+	 * @param parseFn - A function to parse and validate input.
+	 * @returns A validator which output type is exactly `T`
+	 */
+	var makeStructuredValidator = function (parseFn) {
+	    return internalMakeValidator(parseFn);
+	};
+	makers.makeStructuredValidator = makeStructuredValidator;
+	
+	return makers;
+}
+
+var hasRequiredValidators;
+
+function requireValidators () {
+	if (hasRequiredValidators) return validators;
+	hasRequiredValidators = 1;
+	Object.defineProperty(validators, "__esModule", { value: true });
+	validators.json = validators.url = validators.port = validators.host = validators.email = validators.str = validators.num = validators.bool = void 0;
+	var errors_1 = /*@__PURE__*/ requireErrors();
+	var makers_1 = /*@__PURE__*/ requireMakers();
+	// Simplified adaptation of https://github.com/validatorjs/validator.js/blob/master/src/lib/isFQDN.js
+	var isFQDN = function (input) {
+	    if (!input.length)
+	        return false;
+	    var parts = input.split('.');
+	    for (var part = void 0, i = 0; i < parts.length; i++) {
+	        part = parts[i];
+	        if (!/^[a-z\u00a1-\uffff0-9-]+$/i.test(part))
+	            return false;
+	        if (/[\uff01-\uff5e]/.test(part))
+	            return false; // disallow full-width chars
+	        if (part[0] === '-' || part[part.length - 1] === '-')
+	            return false;
+	    }
+	    return true;
+	};
+	// "best effort" regex-based IP address check
+	// If you want a more exhaustive check, create your own custom validator, perhaps wrapping this
+	// implementation (the source of the ipv4 regex below): https://github.com/validatorjs/validator.js/blob/master/src/lib/isIP.js
+	var ipv4Regex = /^(([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\.){3}([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])$/;
+	var ipv6Regex = /([a-f0-9]+:+)+[a-f0-9]+/;
+	var isIP = function (input) {
+	    if (!input.length)
+	        return false;
+	    return ipv4Regex.test(input) || ipv6Regex.test(input);
+	};
+	var EMAIL_REGEX = /^[^@\s]+@[^@\s]+\.[^@\s]+$/; // intentionally non-exhaustive
+	// We use exact validator here because narrowing down to either 'true' or 'false'
+	// makes no sense.
+	validators.bool = (0, makers_1.makeExactValidator)(function (input) {
+	    switch (input) {
+	        case true:
+	        case 'true':
+	        case 't':
+	        case '1':
+	            return true;
+	        case false:
+	        case 'false':
+	        case 'f':
+	        case '0':
+	            return false;
+	        default:
+	            throw new errors_1.EnvError("Invalid bool input: \"".concat(input, "\""));
+	    }
+	});
+	validators.num = (0, makers_1.makeValidator)(function (input) {
+	    var coerced = parseFloat(input);
+	    if (Number.isNaN(coerced))
+	        throw new errors_1.EnvError("Invalid number input: \"".concat(input, "\""));
+	    return coerced;
+	});
+	validators.str = (0, makers_1.makeValidator)(function (input) {
+	    if (typeof input === 'string')
+	        return input;
+	    throw new errors_1.EnvError("Not a string: \"".concat(input, "\""));
+	});
+	validators.email = (0, makers_1.makeValidator)(function (x) {
+	    if (EMAIL_REGEX.test(x))
+	        return x;
+	    throw new errors_1.EnvError("Invalid email address: \"".concat(x, "\""));
+	});
+	validators.host = (0, makers_1.makeValidator)(function (input) {
+	    if (!isFQDN(input) && !isIP(input)) {
+	        throw new errors_1.EnvError("Invalid host (domain or ip): \"".concat(input, "\""));
+	    }
+	    return input;
+	});
+	validators.port = (0, makers_1.makeValidator)(function (input) {
+	    var coerced = +input;
+	    if (Number.isNaN(coerced) ||
+	        "".concat(coerced) !== "".concat(input) ||
+	        coerced % 1 !== 0 ||
+	        coerced < 1 ||
+	        coerced > 65535) {
+	        throw new errors_1.EnvError("Invalid port input: \"".concat(input, "\""));
+	    }
+	    return coerced;
+	});
+	validators.url = (0, makers_1.makeValidator)(function (x) {
+	    try {
+	        new URL(x);
+	        return x;
+	    }
+	    catch (e) {
+	        throw new errors_1.EnvError("Invalid url: \"".concat(x, "\""));
+	    }
+	});
+	/**
+	 * Unless passing a default property, it's recommended that you provide an explicit type parameter
+	 * for json validation if you're using TypeScript. Otherwise the output will be typed as `any`.
+	 * For example:
+	 *
+	 * ```ts
+	 * cleanEnv({
+	 *   MY_VAR: json<{ foo: number }>(),
+	 * })
+	 * ```
+	 */
+	validators.json = (0, makers_1.makeStructuredValidator)(function (x) {
+	    try {
+	        return JSON.parse(x);
+	    }
+	    catch (e) {
+	        throw new errors_1.EnvError("Invalid json: \"".concat(x, "\""));
+	    }
+	});
+	
+	return validators;
+}
+
+var hasRequiredDist;
+
+function requireDist () {
+	if (hasRequiredDist) return dist;
+	hasRequiredDist = 1;
+	(function (exports) {
+		Object.defineProperty(exports, "__esModule", { value: true });
+		exports.makeValidator = exports.makeExactValidator = void 0;
+		var tslib_1 = require$$0;
+		tslib_1.__exportStar(/*@__PURE__*/ requireEnvalid(), exports);
+		tslib_1.__exportStar(/*@__PURE__*/ requireErrors(), exports);
+		tslib_1.__exportStar(/*@__PURE__*/ requireMiddleware(), exports);
+		tslib_1.__exportStar(/*@__PURE__*/ requireTypes(), exports);
+		tslib_1.__exportStar(/*@__PURE__*/ requireValidators(), exports);
+		tslib_1.__exportStar(/*@__PURE__*/ requireReporter(), exports);
+		var makers_1 = /*@__PURE__*/ requireMakers();
+		Object.defineProperty(exports, "makeExactValidator", { enumerable: true, get: function () { return makers_1.makeExactValidator; } });
+		Object.defineProperty(exports, "makeValidator", { enumerable: true, get: function () { return makers_1.makeValidator; } });
+		
+	} (dist));
+	return dist;
+}
+
+var distExports = /*@__PURE__*/ requireDist();
+
+const list = distExports.makeValidator(x => {
     if (typeof x !== "string") {
         throw new Error(`Expected a comma-separated string, got ${typeof x}`);
     }
@@ -19060,9 +20106,9 @@ const list = makeValidator(x => {
         .filter(value => value.length > 0);
     return values;
 });
-const env = cleanEnv(process.env, {
+const env = distExports.cleanEnv(process.env, {
     IGNORED_SCRIPT_LIST: list(),
-    RESOURCES_FOLDER_PATH: str()
+    RESOURCES_FOLDER_PATH: distExports.str()
 });
 
 class LuaUtils {
