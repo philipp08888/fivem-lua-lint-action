@@ -14,7 +14,6 @@ RUN ls -la
 
 RUN apk add --no-cache yarn nodejs && \
     yarn --prod --frozen-lockfile && \
-    yarn install && \
-    yarn build
+    yarn install
 
-ENTRYPOINT ["sh", "/workspace/lint_files.sh"]
+ENTRYPOINT ["yarn", "build"]
