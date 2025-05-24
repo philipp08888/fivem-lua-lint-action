@@ -9,10 +9,12 @@ RUN luarocks install argparse \
  && luarocks install luafilesystem \
  && luarocks install luacheck
 
-WORKDIR /workspace
+WORKDIR /github/workspace
 
 COPY . .
 
 RUN pnpm install --frozen-lockfile --prod
 
-ENTRYPOINT node ./dist/index.js
+RUN echo "== /github/workspace ==" && ls -la /github/workspace
+
+ENTRYPOINT ["sh", "-c", "ls -la /github/workspace && node ./dist/index.js"]
