@@ -7,8 +7,8 @@
   },
   "license": "MIT",
   "scripts": {
-    "install": "tsc -b",
-    "build": "node ./src/linter.js",
+    "build": "tsc -b",
+    "start": "node ./src/linter.js",
     "format": "prettier --write .",
     "watch": "IGNORED_SCRIPT_LIST=client RESOURCES_FOLDER_PATH=./tests/ tsc-watch --onSuccess \"node ./src/linter.js\""
   },
