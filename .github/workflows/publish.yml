@@ -1,0 +1,21 @@
+name: Build and Commit dist
+
+on:
+  push:
+    branches: [master]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v2
+        with:
+          version: 8
+      - run: pnpm install
+      - run: pnpm build
+      - run: git config --global user.email "actions@github.com"
+      - run: git config --global user.name "GitHub Actions"
+      - run: git add -f dist/
+      - run: git commit -m "Build dist [skip ci]" || echo "No changes"
+      - run: git push
