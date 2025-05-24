@@ -2,10 +2,6 @@
   "name": "fivem-lua-lint-action",
   "version": "0.0.0",
   "type": "module",
-  "author": {
-    "name": "GoatGeek",
-    "email": "goatgeek@relta.net"
-  },
   "license": "MIT",
   "scripts": {
     "build": "rollup -c rollup.config.ts --bundleConfigAsCjs",
@@ -14,6 +10,8 @@
     "watch": "IGNORED_SCRIPT_LIST=client RESOURCES_FOLDER_PATH=./tests/ tsc-watch --onSuccess \"node ./src/linter.js\""
   },
   "devDependencies": {
+    "@rollup/plugin-commonjs": "^28.0.3",
+    "@rollup/plugin-json": "^6.1.0",
     "@rollup/plugin-node-resolve": "^16.0.1",
     "prettier": "^2.3.0",
     "rollup": "^4.41.1",

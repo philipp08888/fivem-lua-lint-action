@@ -9,6 +9,8 @@ import {
   Utils
 } from "./utils";
 
+import "dotenv/config";
+
 function mergeAndSortNatives(
   natives: NativeResponse,
   nativesCfx: NativeResponse
