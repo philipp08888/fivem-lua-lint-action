@@ -6,13 +6,17 @@ LUACHECK_CAPTURE="$3"
 LUACHECK_EXTRA_LIBS="$4"
 IGNORED_SCRIPTS="$5"
 
+[ -f "/github/workspace/package.json" ] || { echo "❌ File package.json not found"; }
+
+
+ls -la
 yarn install
 
 # build .luacheckrc file
-cd /github/workspace/ && RESOURCES_FOLDER_PATH=$LUACHECK_PATHS IGNORED_SCRIPT_LIST=$IGNORED_SCRIPTS yarn build
+RESOURCES_FOLDER_PATH=$LUACHECK_PATHS IGNORED_SCRIPT_LIST=$IGNORED_SCRIPTS yarn build
 
 [ -f "/github/workspace/.luacheckrc" ] || { echo "❌ File .luacheckrc not found"; }
-
+ls -la
 echo "outfile => $LUACHECK_CAPTURE"
 
 EXIT_CODE=0
