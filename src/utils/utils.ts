@@ -1,4 +1,5 @@
 import path = require("path");
+import { spawn } from "child_process";
 import * as fs from "fs";
 import { env } from "./env";
 
@@ -56,5 +57,20 @@ export class Utils {
     if (!fs.statSync(dirPath).isDirectory()) {
       throw new Error(`Path is not a directory: '${dirPath}'`);
     }
+  }
+
+  static runCommand(command: string, ...args: Array<string>): Promise<number> {
+    return new Promise((resolve, reject) => {
+      const child = spawn(command, args, { stdio: "inherit" });
+
+      child.on("close", code => {
+        resolve(code ?? 1);
+      });
+
+      child.on("error", err => {
+        console.error(`Failed to start subprocess: ${err}`);
+        reject(err);
+      });
+    });
   }
 }

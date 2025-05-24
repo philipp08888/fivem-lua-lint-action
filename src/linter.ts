@@ -2,6 +2,7 @@ import { NativeResponse, RuntimeNativesClient } from "./clients";
 import {
   additionalClientFunctions,
   additionalServerFunctions,
+  env,
   LuaUtils,
   LuaWriter,
   manifestVariables,
@@ -37,6 +38,7 @@ async function main() {
   const writer = new LuaWriter(".luacheckrc");
   const client = new RuntimeNativesClient();
   const excludedScriptFiles = Utils.getExcludedFiles();
+  const { RESOURCES_FOLDER_PATH: resourcesPath } = env;
 
   // TODO: Handle possible exceptions
   const [natives, nativesCfx] = await Promise.all([
@@ -93,6 +95,15 @@ async function main() {
     );
 
   writer.writeToFile();
+
+  const exitCode = await Utils.runCommand(
+    "luacheck",
+    "--config",
+    ".luacheckrc",
+    resourcesPath
+  );
+
+  process.exit(exitCode);
 }
 
 main();
