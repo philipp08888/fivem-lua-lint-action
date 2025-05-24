@@ -11,11 +11,10 @@ RUN luarocks install argparse \
 
 WORKDIR /workspace
 
-COPY package.json pnpm-lock.yaml* ./
+COPY . .
 
 RUN pnpm install --frozen-lockfile --prod
 
-COPY . .
 
 RUN pnpm build
 
