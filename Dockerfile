@@ -13,10 +13,6 @@ WORKDIR /workspace
 
 COPY . .
 
-RUN pnpm install --frozen-lockfile
+RUN pnpm install --frozen-lockfile --prod
 
-RUN pnpm build
-
-RUN ls -la ./dist
-
-ENTRYPOINT ls -la && node ./dist/index.js
+ENTRYPOINT node ./dist/index.js
