@@ -1,6 +1,6 @@
-import path = require("path");
 import { spawn } from "child_process";
 import * as fs from "fs";
+import path from "path";
 import { env } from "./env";
 
 export class Utils {

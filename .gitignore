@@ -4,3 +4,4 @@ node_modules/
 .luacheckrc
 **/*.js
 .env
+dist/

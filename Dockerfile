@@ -1,19 +1,21 @@
-FROM minidocks/lua:latest
+FROM node:20-alpine
 
-RUN apk add build-base
+RUN apk add --no-cache build-base lua5.4 lua5.4-dev luarocks
 
-RUN luarocks install argparse && \
-    luarocks install luafilesystem && \
-    luarocks install luacheck
+RUN luarocks install argparse \
+ && luarocks install luafilesystem \
+ && luarocks install luacheck
+
+RUN npm install -g pnpm
 
 WORKDIR /workspace
 
+COPY package.json pnpm-lock.yaml* ./
+
+RUN pnpm install --frozen-lockfile --prod
+
 COPY . .
 
-RUN ls -la
+RUN pnpm build
 
-RUN apk add --no-cache yarn nodejs && \
-    yarn --prod --frozen-lockfile && \
-    yarn build
-
-ENTRYPOINT ["yarn", "start"]
+ENTRYPOINT ["pnpm", "start"]
