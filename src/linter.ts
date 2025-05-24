@@ -3,7 +3,8 @@ import {
   additionalClientFunctions,
   additionalServerFunctions,
   LuaUtils,
-  LuaWriter
+  LuaWriter,
+  manifestVariables
 } from "./utils";
 
 function mergeAndSortNatives(
@@ -72,12 +73,17 @@ async function main() {
     .addVariable("stds.cfx", {
       read_globals: sharedNativeNames
     })
+    .addVariable("stds.cfx_manifest", {
+      read_globals: [...manifestVariables]
+    })
     .addVariable('files["**/client.lua"].std', "max+cfx+cfx_cl")
     .addVariable('files["**/cl_*.lua"].std', "max+cfx+cfx_cl")
     .addVariable('files["**/client/**/*.lua"].std', "max+cfx+cfx_cl")
     .addVariable('files["**/server.lua"].std', "max+cfx+cfx_sv")
     .addVariable('files["**/sv_*.lua"].std', "max+cfx+cfx_sv")
-    .addVariable('files["**/server/**/*.lua"].std', "max+cfx+cfx_sv");
+    .addVariable('files["**/server/**/*.lua"].std', "max+cfx+cfx_sv")
+    .addVariable('files["**/fxmanifest.lua"].std', "max+cfx_manifest")
+    .addVariable('files["**/__resource.lua"].std', "");
 
   writer.writeToFile();
 }
