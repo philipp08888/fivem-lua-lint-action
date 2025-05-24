@@ -17,4 +17,4 @@ RUN pnpm install --frozen-lockfile --prod
 
 RUN echo "== /github/workspace ==" && ls -la /github/workspace
 
-ENTRYPOINT ["sh", "-c", "ls -la /github/workspace && node ./dist/index.js"]
+ENTRYPOINT ["node", "./dist/index.js"]
