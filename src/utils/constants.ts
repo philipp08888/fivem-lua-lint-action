@@ -30,7 +30,16 @@ const sharedFunctions = [
   "RegisterNetEvent",
   "TriggerEvent",
   "RemoveEventHandler",
-  "exports"
+  "exports",
+  "json",
+  "quat",
+  "vec",
+  "vector2",
+  "vec2",
+  "vector3",
+  "vec3",
+  "vector4",
+  "vec4"
 ] as const;
 
 export const manifestVariables = [
