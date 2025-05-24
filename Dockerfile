@@ -13,7 +13,7 @@ WORKDIR /workspace
 
 COPY . .
 
-RUN pnpm install --frozen-lockfile --prod
+RUN pnpm install --frozen-lockfile
 
 
 RUN pnpm build

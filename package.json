@@ -9,7 +9,7 @@
   "license": "MIT",
   "scripts": {
     "build": "rollup -c rollup.config.ts --bundleConfigAsCjs",
-    "start": "node ./src/linter.js",
+    "start": "node ./dist/index.js",
     "format": "prettier --write .",
     "watch": "IGNORED_SCRIPT_LIST=client RESOURCES_FOLDER_PATH=./tests/ tsc-watch --onSuccess \"node ./src/linter.js\""
   },
