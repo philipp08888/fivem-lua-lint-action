@@ -4,7 +4,8 @@ import {
   additionalServerFunctions,
   LuaUtils,
   LuaWriter,
-  manifestVariables
+  manifestVariables,
+  Utils
 } from "./utils";
 
 function mergeAndSortNatives(
@@ -35,6 +36,7 @@ function mergeAndSortNatives(
 async function main() {
   const writer = new LuaWriter(".luacheckrc");
   const client = new RuntimeNativesClient();
+  const excludedScriptFiles = Utils.getExcludedFiles();
 
   // TODO: Handle possible exceptions
   const [natives, nativesCfx] = await Promise.all([
@@ -84,7 +86,11 @@ async function main() {
     .addVariable('files["**/sv_*.lua"].std', "max+cfx+cfx_sv")
     .addVariable('files["**/server/**/*.lua"].std', "max+cfx+cfx_sv")
     .addVariable('files["**/fxmanifest.lua"].std', "max+cfx_manifest")
-    .addVariable('files["**/__resource.lua"].std', "max+cfx_manifest");
+    .addVariable('files["**/__resource.lua"].std', "max+cfx_manifest")
+    .addVariable(
+      "exclude_files",
+      Object.values(excludedScriptFiles).map(path => path)
+    );
 
   writer.writeToFile();
 }

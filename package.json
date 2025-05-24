@@ -10,7 +10,7 @@
     "install": "tsc -b",
     "build": "node ./src/linter.js",
     "format": "prettier --write .",
-    "watch": "IGNORED_SCRIPT_LIST=123 RESOURCES_FOLDER_PATH=fc_garage,fc_blackjack tsc-watch --onSuccess \"node ./src/linter.js\""
+    "watch": "IGNORED_SCRIPT_LIST=client RESOURCES_FOLDER_PATH=./tests/ tsc-watch --onSuccess \"node ./src/linter.js\""
   },
   "devDependencies": {
     "prettier": "^2.3.0",
