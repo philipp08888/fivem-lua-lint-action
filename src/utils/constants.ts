@@ -18,6 +18,20 @@ const cfxClientFunctions = [
   "SendNUIMessage"
 ] as const;
 
+const sharedFunctions = [
+  "CreateThread",
+  "Citizen",
+  "SetTimeout",
+  "Await",
+  "Wait",
+  "Trace",
+  "AddEventHandler",
+  "RegisterNetEvent",
+  "TriggerEvent",
+  "RemoveEventHandler",
+  "exports"
+] as const;
+
 export const manifestVariables = [
   "fx_version",
   "games",
@@ -52,7 +66,11 @@ export const manifestVariables = [
 
 export const additionalServerFunctions = [
   ...esxServerFunctions,
-  ...cfxServerFunctions
+  ...cfxServerFunctions,
+  ...sharedFunctions
 ] as const;
 
-export const additionalClientFunctions = [...cfxClientFunctions] as const;
+export const additionalClientFunctions = [
+  ...cfxClientFunctions,
+  ...sharedFunctions
+] as const;

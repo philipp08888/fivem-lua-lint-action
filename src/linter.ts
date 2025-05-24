@@ -83,7 +83,7 @@ async function main() {
     .addVariable('files["**/sv_*.lua"].std', "max+cfx+cfx_sv")
     .addVariable('files["**/server/**/*.lua"].std', "max+cfx+cfx_sv")
     .addVariable('files["**/fxmanifest.lua"].std', "max+cfx_manifest")
-    .addVariable('files["**/__resource.lua"].std', "");
+    .addVariable('files["**/__resource.lua"].std', "max+cfx_manifest");
 
   writer.writeToFile();
 }
